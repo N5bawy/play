@@ -1,0 +1,745 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameHub | ميني كيمز</title>
+  <style>
+    :root{
+      --bg:#0f172a;
+      --bg2:#111827;
+      --card:rgba(15,23,42,.72);
+      --text:#f8fafc;
+      --muted:#cbd5e1;
+      --primary:#8b5cf6;
+      --primary2:#06b6d4;
+      --accent:#22c55e;
+      --danger:#ef4444;
+      --border:#243041;
+      --shadow:0 20px 60px rgba(0,0,0,.35);
+    }
+    body.light{
+      --bg:#f8fafc;
+      --bg2:#eef2ff;
+      --card:rgba(255,255,255,.8);
+      --text:#0f172a;
+      --muted:#475569;
+      --border:#dbe3ee;
+      --shadow:0 20px 60px rgba(15,23,42,.12);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(139,92,246,.18), transparent 25%),
+        radial-gradient(circle at bottom left, rgba(6,182,212,.15), transparent 30%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+      color:var(--text);
+      min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none}
+    button,input{font:inherit}
+    .container{width:min(1180px, calc(100% - 24px)); margin-inline:auto;}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter:blur(16px);
+      background:color-mix(in srgb, var(--bg) 70%, transparent);
+      border-bottom:1px solid var(--border);
+    }
+    .topbar-inner{
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+      padding:14px 0;
+    }
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:1.1rem}
+    .logo{
+      width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--primary),var(--primary2));
+      box-shadow:var(--shadow);
+    }
+    .nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+    .nav a,.theme-btn,.btn{
+      border:1px solid var(--border);
+      background:color-mix(in srgb, var(--card) 88%, transparent);
+      color:var(--text);
+      border-radius:14px;
+      padding:10px 14px;
+      transition:.25s ease;
+      cursor:pointer;
+      box-shadow:var(--shadow);
+    }
+    .nav a:hover,.theme-btn:hover,.btn:hover{transform:translateY(-2px)}
+    .hero{padding:42px 0 18px}
+    .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:20px}
+    .glass{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(12px);
+    }
+    .hero-card{padding:34px;min-height:320px;position:relative;overflow:hidden}
+    .hero-card::before{
+      content:"";position:absolute;inset:auto -80px -100px auto;width:260px;height:260px;border-radius:50%;
+      background:radial-gradient(circle, rgba(139,92,246,.35), transparent 65%);
+      pointer-events:none;
+    }
+    .eyebrow{
+      display:inline-flex;gap:8px;align-items:center;
+      background:color-mix(in srgb, var(--primary) 16%, transparent);
+      border:1px solid color-mix(in srgb, var(--primary) 25%, var(--border));
+      padding:8px 12px;border-radius:999px;font-size:.95rem;margin-bottom:14px;
+    }
+    h1{margin:0 0 12px;font-size:clamp(2rem,4vw,4rem);line-height:1.1}
+    .lead{margin:0;color:var(--muted);line-height:1.8;max-width:60ch;font-size:1.05rem}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+    .btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));border-color:transparent;color:#fff;font-weight:700}
+    .stats{display:grid;gap:14px}
+    .stat{padding:22px;display:flex;flex-direction:column;justify-content:center;min-height:95px}
+    .stat b{font-size:1.6rem;margin-bottom:4px}
+    .stat span{color:var(--muted)}
+    .section{padding:18px 0 28px}
+    .section-title{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:16px}
+    .section-title h2{margin:0;font-size:1.6rem}
+    .section-title p{margin:0;color:var(--muted)}
+    .games-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .game-card{
+      padding:18px;cursor:pointer;transition:.25s ease;min-height:160px;
+      display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .game-card:hover{transform:translateY(-4px)}
+    .game-icon{
+      width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:1.6rem;
+      background:linear-gradient(135deg, color-mix(in srgb, var(--primary) 30%, transparent), color-mix(in srgb, var(--primary2) 20%, transparent));
+      border:1px solid var(--border);
+    }
+    .game-card h3{margin:14px 0 6px;font-size:1.15rem}
+    .game-card p{margin:0;color:var(--muted);line-height:1.6;font-size:.95rem}
+    .game-section{padding:12px 0 28px}
+    .game-shell{padding:22px}
+    .game-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+    .game-header h3{margin:0;font-size:1.4rem}
+    .game-header .small{color:var(--muted);margin-top:6px;font-size:.95rem}
+    .panel{display:grid;gap:16px}
+    .panel-row{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start}
+    .box{
+      background:color-mix(in srgb, var(--card) 82%, transparent);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:18px;
+    }
+    .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .score{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .score-item{text-align:center;padding:14px 10px;border-radius:16px;background:color-mix(in srgb, var(--bg) 55%, transparent);border:1px solid var(--border)}
+    .score-item b{display:block;font-size:1.35rem;margin-bottom:2px}
+    .score-item span{color:var(--muted);font-size:.92rem}
+    .result{
+      margin-top:14px;min-height:52px;display:flex;align-items:center;justify-content:center;text-align:center;
+      border-radius:16px;padding:12px 14px;background:color-mix(in srgb, var(--bg) 55%, transparent);border:1px solid var(--border);line-height:1.8
+    }
+    .rps-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .choice-btn{padding:14px 12px;font-weight:700;font-size:1rem;border-radius:16px;border:none;color:#fff}
+    .choice-btn:nth-child(1){background:linear-gradient(135deg,#3b82f6,#60a5fa)}
+    .choice-btn:nth-child(2){background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+    .choice-btn:nth-child(3){background:linear-gradient(135deg,#10b981,#34d399)}
+    .ttt-board{
+      display:grid;grid-template-columns:repeat(3,minmax(80px,1fr));gap:10px;max-width:420px;margin-inline:auto
+    }
+    .ttt-cell{
+      aspect-ratio:1;border-radius:20px;border:1px solid var(--border);
+      background:linear-gradient(180deg, color-mix(in srgb, var(--card) 90%, transparent), color-mix(in srgb, var(--bg) 50%, transparent));
+      color:var(--text);font-size:2rem;font-weight:800;cursor:pointer;transition:.2s ease;box-shadow:var(--shadow)
+    }
+    .ttt-cell:hover{transform:translateY(-2px)}
+    .ttt-cell.filled{cursor:default}
+    .input-row{display:flex;gap:10px;flex-wrap:wrap}
+    input[type="number"]{
+      flex:1;min-width:180px;padding:13px 14px;border-radius:16px;border:1px solid var(--border);
+      background:color-mix(in srgb, var(--bg) 55%, transparent);color:var(--text);outline:none
+    }
+    input[type="number"]::placeholder{color:color-mix(in srgb, var(--muted) 80%, transparent)}
+    .memory-grid{display:grid;grid-template-columns:repeat(4,minmax(70px,1fr));gap:10px;max-width:560px;margin-inline:auto}
+    .memory-card{
+      aspect-ratio:1;border-radius:18px;border:1px solid var(--border);
+      background:linear-gradient(135deg, color-mix(in srgb, var(--primary) 20%, transparent), color-mix(in srgb, var(--primary2) 18%, transparent));
+      color:var(--text);font-size:2rem;cursor:pointer;display:grid;place-items:center;transition:.2s ease;box-shadow:var(--shadow);user-select:none
+    }
+    .memory-card:hover{transform:translateY(-2px)}
+    .memory-card.flipped,.memory-card.matched{background:color-mix(in srgb, var(--bg) 60%, transparent);font-size:2.2rem}
+    .memory-card.matched{outline:2px solid color-mix(in srgb, var(--accent) 50%, transparent)}
+    .footer{padding:18px 0 30px;color:var(--muted);text-align:center}
+    .hint{color:var(--muted);font-size:.95rem;line-height:1.7}
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;
+      background:color-mix(in srgb, var(--accent) 15%, transparent);
+      border:1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
+      font-size:.9rem;
+    }
+    @media (max-width:980px){
+      .hero-grid,.panel-row,.games-grid{grid-template-columns:1fr}
+      .stats{grid-template-columns:repeat(3,1fr)}
+    }
+    @media (max-width:720px){
+      .topbar-inner{flex-direction:column;align-items:stretch}
+      .nav{justify-content:space-between}
+      .stats{grid-template-columns:1fr}
+      .hero-card{padding:24px}
+      .game-shell{padding:16px}
+      .memory-grid{grid-template-columns:repeat(4,minmax(58px,1fr))}
+      .ttt-board{grid-template-columns:repeat(3,minmax(68px,1fr))}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <div class="logo">🎮</div>
+        <div>
+          <div>GameHub</div>
+          <div style="font-size:.85rem;color:var(--muted);font-weight:600;">موقع ميني كيمز مرتب ومطور</div>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <a href="#home">الرئيسية</a>
+        <a href="#games">الألعاب</a>
+        <a href="#rps">حجر ورقة مقص</a>
+        <a href="#tictactoe">إكس-أو</a>
+        <a href="#guess">خمن الرقم</a>
+        <a href="#memory">الذاكرة</a>
+      </nav>
+
+      <button class="theme-btn" id="themeToggle">🌙 تبديل الوضع</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="home">
+      <div class="hero-grid">
+        <div class="glass hero-card">
+          <div class="eyebrow">✨ موقع ألعاب خفيف، أنيق، وسريع</div>
+          <h1>موقع ميني كيمز مرتب واحترافي</h1>
+          <p class="lead">
+            قالب جاهز بالعربي وفيه ألعاب صغيرة منظمة، وتصميم حديث، ومتجاوب مع الجوال،
+            وتقدر تطوره وتعدله بسهولة.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#games">ابدأ اللعب</a>
+            <a class="btn" href="#memory">أفضل لعبة</a>
+          </div>
+        </div>
+
+        <div class="stats">
+          <div class="glass stat"><b>4</b><span>ألعاب جاهزة</span></div>
+          <div class="glass stat"><b>100%</b><span>متجاوب</span></div>
+          <div class="glass stat"><b>RTL</b><span>دعم عربي كامل</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="games">
+      <div class="section-title">
+        <div>
+          <h2>الألعاب المتوفرة</h2>
+          <p>اضغط على أي لعبة وابدأ مباشرة</p>
+        </div>
+      </div>
+
+      <div class="games-grid">
+        <a class="glass game-card" href="#rps">
+          <div class="game-icon">✊</div>
+          <div>
+            <h3>حجر ورقة مقص</h3>
+            <p>نتائج فورية مع نظام نقاط بسيط.</p>
+          </div>
+        </a>
+        <a class="glass game-card" href="#tictactoe">
+          <div class="game-icon">❌</div>
+          <div>
+            <h3>إكس-أو</h3>
+            <p>لعبة كلاسيكية مع تتبع الفائز والتعادل.</p>
+          </div>
+        </a>
+        <a class="glass game-card" href="#guess">
+          <div class="game-icon">🔢</div>
+          <div>
+            <h3>خمن الرقم</h3>
+            <p>اختر رقم بين 1 و 100 بأقل محاولات.</p>
+          </div>
+        </a>
+        <a class="glass game-card" href="#memory">
+          <div class="game-icon">🧠</div>
+          <div>
+            <h3>لعبة الذاكرة</h3>
+            <p>اقلب البطاقات وطابق الأزواج المتشابهة.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="game-section" id="rps">
+      <div class="glass game-shell">
+        <div class="game-header">
+          <div>
+            <h3>✊ حجر ورقة مقص</h3>
+            <div class="small">اختَر لعبتك وشوف من يفوز</div>
+          </div>
+          <div class="badge">نظام نقاط مباشر</div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-row">
+            <div class="box">
+              <div class="rps-buttons">
+                <button class="choice-btn" data-choice="rock">✊ حجر</button>
+                <button class="choice-btn" data-choice="paper">✋ ورقة</button>
+                <button class="choice-btn" data-choice="scissors">✌️ مقص</button>
+              </div>
+
+              <div class="result" id="rpsResult">اختر حركة وابدأ اللعب الآن</div>
+
+              <div class="controls">
+                <button class="btn" id="rpsReset">إعادة التصفير</button>
+              </div>
+            </div>
+
+            <div class="box">
+              <div class="score">
+                <div class="score-item"><b id="playerScore">0</b><span>أنت</span></div>
+                <div class="score-item"><b id="drawScore">0</b><span>تعادل</span></div>
+                <div class="score-item"><b id="cpuScore">0</b><span>الكمبيوتر</span></div>
+              </div>
+              <p class="hint" style="margin:14px 0 0;">الحجر يهزم المقص، المقص يهزم الورقة، الورقة تهزم الحجر.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="game-section" id="tictactoe">
+      <div class="glass game-shell">
+        <div class="game-header">
+          <div>
+            <h3>❌ لعبة إكس-أو</h3>
+            <div class="small" id="tttStatus">الدور على اللاعب X</div>
+          </div>
+          <div class="badge">لعب محلي 2 لاعبين</div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-row">
+            <div class="box">
+              <div class="ttt-board" id="tttBoard"></div>
+              <div class="result" id="tttResult">ابدأ اللعب من اللوحة</div>
+              <div class="controls">
+                <button class="btn primary" id="tttReset">إعادة اللعبة</button>
+              </div>
+            </div>
+
+            <div class="box">
+              <div class="score">
+                <div class="score-item"><b id="xWins">0</b><span>فوز X</span></div>
+                <div class="score-item"><b id="draws">0</b><span>تعادل</span></div>
+                <div class="score-item"><b id="oWins">0</b><span>فوز O</span></div>
+              </div>
+              <p class="hint" style="margin:14px 0 0;">إذا انتهت الجولة، تقدر تعيد اللعب من زر إعادة اللعبة.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="game-section" id="guess">
+      <div class="glass game-shell">
+        <div class="game-header">
+          <div>
+            <h3>🔢 خمن الرقم</h3>
+            <div class="small">الرقم بين 1 و 100</div>
+          </div>
+          <div class="badge">تحدي سريع</div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-row">
+            <div class="box">
+              <div class="input-row">
+                <input type="number" id="guessInput" placeholder="اكتب رقمك هنا" min="1" max="100" />
+                <button class="btn primary" id="guessBtn">تأكيد التخمين</button>
+              </div>
+
+              <div class="result" id="guessResult">جرب حظك واكتب رقم</div>
+
+              <div class="controls">
+                <button class="btn" id="guessReset">رقم جديد</button>
+              </div>
+            </div>
+
+            <div class="box">
+              <div class="score">
+                <div class="score-item"><b id="guessTries">0</b><span>محاولات</span></div>
+                <div class="score-item"><b id="guessBest">—</b><span>أفضل نتيجة</span></div>
+                <div class="score-item"><b>1-100</b><span>النطاق</span></div>
+              </div>
+              <p class="hint" style="margin:14px 0 0;">إذا كان الرقم بعيد، يعطيك النظام تلميح أعلى أو أقل.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="game-section" id="memory">
+      <div class="glass game-shell">
+        <div class="game-header">
+          <div>
+            <h3>🧠 لعبة الذاكرة</h3>
+            <div class="small">اقلب البطاقات وطابق الأزواج</div>
+          </div>
+          <div class="badge">8 أزواج</div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-row">
+            <div class="box">
+              <div class="memory-grid" id="memoryGrid"></div>
+
+              <div class="result" id="memoryResult">ابدأ وحاول تنهي اللعبة بأقل عدد من الحركات</div>
+
+              <div class="controls">
+                <button class="btn primary" id="memoryReset">إعادة الترتيب</button>
+              </div>
+            </div>
+
+            <div class="box">
+              <div class="score">
+                <div class="score-item"><b id="memoryMoves">0</b><span>حركات</span></div>
+                <div class="score-item"><b id="memoryMatches">0</b><span>أزواج</span></div>
+                <div class="score-item"><b>16</b><span>بطاقة</span></div>
+              </div>
+              <p class="hint" style="margin:14px 0 0;">اللعبة تعيد الترتيب بشكل عشوائي كل مرة.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">صممته لك بشكل نظيف ومرتب — وتقدر تطوره أكثر بأي وقت.</div>
+  </main>
+
+  <script>
+    // ===== الوضع الليلي / الفاتح =====
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') document.body.classList.add('light');
+
+    function updateThemeButton() {
+      themeToggle.textContent = document.body.classList.contains('light')
+        ? '☀️ الوضع الفاتح'
+        : '🌙 تبديل الوضع';
+    }
+    updateThemeButton();
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
+      updateThemeButton();
+    });
+
+    // ===== حجر ورقة مقص =====
+    const rpsButtons = document.querySelectorAll('[data-choice]');
+    const rpsResult = document.getElementById('rpsResult');
+    const playerScoreEl = document.getElementById('playerScore');
+    const drawScoreEl = document.getElementById('drawScore');
+    const cpuScoreEl = document.getElementById('cpuScore');
+    const rpsReset = document.getElementById('rpsReset');
+
+    let playerScore = 0, drawScore = 0, cpuScore = 0;
+    const choices = ['rock', 'paper', 'scissors'];
+    const choiceText = { rock:'حجر', paper:'ورقة', scissors:'مقص' };
+
+    function getWinner(player, cpu) {
+      if (player === cpu) return 'draw';
+      if (
+        (player === 'rock' && cpu === 'scissors') ||
+        (player === 'paper' && cpu === 'rock') ||
+        (player === 'scissors' && cpu === 'paper')
+      ) return 'player';
+      return 'cpu';
+    }
+
+    rpsButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const playerChoice = btn.dataset.choice;
+        const cpuChoice = choices[Math.floor(Math.random() * choices.length)];
+        const winner = getWinner(playerChoice, cpuChoice);
+
+        if (winner === 'draw') {
+          drawScore++;
+          rpsResult.textContent = `تعادل! اخترت ${choiceText[playerChoice]} والكمبيوتر اختار ${choiceText[cpuChoice]}.`;
+        } else if (winner === 'player') {
+          playerScore++;
+          rpsResult.textContent = `فزت! ${choiceText[playerChoice]} يهزم ${choiceText[cpuChoice]}.`;
+        } else {
+          cpuScore++;
+          rpsResult.textContent = `خسرت! الكمبيوتر اختار ${choiceText[cpuChoice]} وفاز هذه الجولة.`;
+        }
+
+        playerScoreEl.textContent = playerScore;
+        drawScoreEl.textContent = drawScore;
+        cpuScoreEl.textContent = cpuScore;
+      });
+    });
+
+    rpsReset.addEventListener('click', () => {
+      playerScore = 0; drawScore = 0; cpuScore = 0;
+      playerScoreEl.textContent = 0;
+      drawScoreEl.textContent = 0;
+      cpuScoreEl.textContent = 0;
+      rpsResult.textContent = 'تم تصفير النقاط. ابدأ من جديد!';
+    });
+
+    // ===== إكس-أو =====
+    const tttBoardEl = document.getElementById('tttBoard');
+    const tttResult = document.getElementById('tttResult');
+    const tttStatus = document.getElementById('tttStatus');
+    const tttReset = document.getElementById('tttReset');
+    const xWinsEl = document.getElementById('xWins');
+    const oWinsEl = document.getElementById('oWins');
+    const drawsEl = document.getElementById('draws');
+
+    let tttBoard = Array(9).fill('');
+    let currentPlayer = 'X';
+    let tttActive = true;
+    let xWins = 0, oWins = 0, draws = 0;
+
+    function renderTTT() {
+      tttBoardEl.innerHTML = '';
+      tttBoard.forEach((cell, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'ttt-cell' + (cell ? ' filled' : '');
+        btn.textContent = cell;
+        btn.addEventListener('click', () => handleTTTClick(index));
+        tttBoardEl.appendChild(btn);
+      });
+    }
+
+    function checkTTTWinner(board) {
+      const combos = [
+        [0,1,2],[3,4,5],[6,7,8],
+        [0,3,6],[1,4,7],[2,5,8],
+        [0,4,8],[2,4,6]
+      ];
+      for (const [a,b,c] of combos) {
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) return board[a];
+      }
+      return board.includes('') ? null : 'draw';
+    }
+
+    function handleTTTClick(index) {
+      if (!tttActive || tttBoard[index]) return;
+
+      tttBoard[index] = currentPlayer;
+      const winner = checkTTTWinner(tttBoard);
+
+      if (winner) {
+        renderTTT();
+
+        if (winner === 'draw') {
+          draws++;
+          drawsEl.textContent = draws;
+          tttResult.textContent = 'انتهت المباراة بالتعادل.';
+          tttStatus.textContent = 'تعادل';
+        } else if (winner === 'X') {
+          xWins++;
+          xWinsEl.textContent = xWins;
+          tttResult.textContent = 'فاز اللاعب X!';
+          tttStatus.textContent = 'فاز X';
+        } else {
+          oWins++;
+          oWinsEl.textContent = oWins;
+          tttResult.textContent = 'فاز اللاعب O!';
+          tttStatus.textContent = 'فاز O';
+        }
+
+        tttActive = false;
+        return;
+      }
+
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      tttStatus.textContent = `الدور على اللاعب ${currentPlayer}`;
+      tttResult.textContent = `تم اختيار خانة جديدة. الآن الدور على ${currentPlayer}`;
+      renderTTT();
+    }
+
+    function resetTTT() {
+      tttBoard = Array(9).fill('');
+      currentPlayer = 'X';
+      tttActive = true;
+      tttStatus.textContent = 'الدور على اللاعب X';
+      tttResult.textContent = 'ابدأ اللعب من اللوحة';
+      renderTTT();
+    }
+
+    tttReset.addEventListener('click', resetTTT);
+    renderTTT();
+
+    // ===== خمن الرقم =====
+    const guessInput = document.getElementById('guessInput');
+    const guessBtn = document.getElementById('guessBtn');
+    const guessResult = document.getElementById('guessResult');
+    const guessReset = document.getElementById('guessReset');
+    const guessTriesEl = document.getElementById('guessTries');
+    const guessBestEl = document.getElementById('guessBest');
+
+    let secretNumber = randomNumber();
+    let guessTries = 0;
+    let bestScore = null;
+
+    function randomNumber() {
+      return Math.floor(Math.random() * 100) + 1;
+    }
+
+    function resetGuess() {
+      secretNumber = randomNumber();
+      guessTries = 0;
+      guessTriesEl.textContent = 0;
+      guessInput.value = '';
+      guessResult.textContent = 'تم إنشاء رقم جديد. ابدأ التخمين!';
+    }
+
+    function submitGuess() {
+      const value = Number(guessInput.value);
+
+      if (!value || value < 1 || value > 100) {
+        guessResult.textContent = 'رجاءً اكتب رقم صحيح بين 1 و 100.';
+        return;
+      }
+
+      guessTries++;
+      guessTriesEl.textContent = guessTries;
+
+      if (value === secretNumber) {
+        guessResult.textContent = `ممتاز! عرفت الرقم الصحيح وهو ${secretNumber} بعد ${guessTries} محاولات.`;
+        if (bestScore === null || guessTries < bestScore) {
+          bestScore = guessTries;
+          guessBestEl.textContent = bestScore;
+        }
+      } else if (value > secretNumber) {
+        guessResult.textContent = 'حاول رقم أقل 👇';
+      } else {
+        guessResult.textContent = 'حاول رقم أعلى 👆';
+      }
+
+      guessInput.focus();
+      guessInput.select();
+    }
+
+    guessBtn.addEventListener('click', submitGuess);
+    guessInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGuess(); });
+    guessReset.addEventListener('click', resetGuess);
+    resetGuess();
+
+    // ===== لعبة الذاكرة =====
+    const memoryGrid = document.getElementById('memoryGrid');
+    const memoryResult = document.getElementById('memoryResult');
+    const memoryReset = document.getElementById('memoryReset');
+    const memoryMovesEl = document.getElementById('memoryMoves');
+    const memoryMatchesEl = document.getElementById('memoryMatches');
+
+    const emojis = ['🍎','🚀','🎮','🌟','🍕','⚽','🐱','🎵'];
+    let memoryCards = [];
+    let firstCard = null;
+    let secondCard = null;
+    let memoryLock = false;
+    let memoryMoves = 0;
+    let memoryMatches = 0;
+
+    function shuffle(array) {
+      return array
+        .map(value => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value);
+    }
+
+    function createMemoryBoard() {
+      const deck = shuffle([...emojis, ...emojis]);
+      memoryCards = deck.map((emoji, index) => ({
+        id: index,
+        emoji,
+        flipped: false,
+        matched: false
+      }));
+
+      firstCard = null;
+      secondCard = null;
+      memoryLock = false;
+      memoryMoves = 0;
+      memoryMatches = 0;
+      memoryMovesEl.textContent = 0;
+      memoryMatchesEl.textContent = 0;
+      memoryResult.textContent = 'تم ترتيب البطاقات. ابدأ اللعب!';
+      renderMemory();
+    }
+
+    function renderMemory() {
+      memoryGrid.innerHTML = '';
+      memoryCards.forEach(card => {
+        const btn = document.createElement('button');
+        btn.className = 'memory-card' + (card.flipped ? ' flipped' : '') + (card.matched ? ' matched' : '');
+        btn.textContent = (card.flipped || card.matched) ? card.emoji : '❓';
+        btn.disabled = card.matched;
+        btn.addEventListener('click', () => flipMemoryCard(card.id));
+        memoryGrid.appendChild(btn);
+      });
+    }
+
+    function flipMemoryCard(id) {
+      if (memoryLock) return;
+
+      const card = memoryCards[id];
+      if (card.flipped || card.matched) return;
+
+      card.flipped = true;
+      renderMemory();
+
+      if (!firstCard) {
+        firstCard = card;
+        return;
+      }
+
+      secondCard = card;
+      memoryMoves++;
+      memoryMovesEl.textContent = memoryMoves;
+      memoryLock = true;
+
+      setTimeout(() => {
+        if (firstCard.emoji === secondCard.emoji) {
+          firstCard.matched = true;
+          secondCard.matched = true;
+          memoryMatches++;
+          memoryMatchesEl.textContent = memoryMatches;
+          memoryResult.textContent = `ممتاز! طابقت زوج ${firstCard.emoji}`;
+
+          if (memoryMatches === emojis.length) {
+            memoryResult.textContent = `أحسنت! أنهيت اللعبة في ${memoryMoves} حركة.`;
+          }
+        } else {
+          firstCard.flipped = false;
+          secondCard.flipped = false;
+          memoryResult.textContent = 'لا يوجد تطابق، حاول مرة ثانية.';
+        }
+
+        firstCard = null;
+        secondCard = null;
+        memoryLock = false;
+        renderMemory();
+      }, 700);
+    }
+
+    memoryReset.addEventListener('click', createMemoryBoard);
+    createMemoryBoard();
+  </script>
+</body>
+</html>

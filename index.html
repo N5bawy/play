@@ -547,6 +547,46 @@
       background: #8b90a5;
     }
 
+    .footer-links {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 18px;
+      direction: ltr;
+    }
+
+    .footer-link {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .footer-link:hover {
+      color: var(--text);
+    }
+
+    .discord-wrap {
+      display: grid;
+      justify-items: center;
+      gap: 6px;
+    }
+
+    .discord-invite {
+      color: var(--muted-2);
+      font-size: 11px;
+      text-decoration: none;
+      transition: color 160ms ease;
+      white-space: nowrap;
+    }
+
+    .discord-invite:hover {
+      color: var(--gold);
+    }
+
     @keyframes blink {
       50% {
         opacity: 0;
@@ -747,6 +787,15 @@
         <canvas id="resultChart"></canvas>
       </div>
     </section>
+
+    <footer class="footer-links" aria-label="روابط المجتمع">
+      <a class="footer-link" href="#" aria-label="GitHub">github</a>
+      <div class="discord-wrap">
+        <a class="footer-link" href="https://discord.gg/WZmsn2en6b" target="_blank" rel="noopener noreferrer" aria-label="Discord">discord</a>
+        <a class="discord-invite" href="https://discord.gg/WZmsn2en6b" target="_blank" rel="noopener noreferrer">https://discord.gg/WZmsn2en6b</a>
+      </div>
+      <a class="footer-link" href="#" aria-label="Twitter">twitter</a>
+    </footer>
   </div>
 
   <script>

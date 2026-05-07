@@ -3,742 +3,1217 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GameHub | ميني قيمز</title>
+  <title>SpeedType</title>
   <style>
-    :root{
-      --bg:#0f172a;
-      --bg2:#111827;
-      --card:rgba(15,23,42,.72);
-      --text:#f8fafc;
-      --muted:#cbd5e1;
-      --primary:#8b5cf6;
-      --primary2:#06b6d4;
-      --accent:#22c55e;
-      --danger:#ef4444;
-      --border:#243041;
-      --shadow:0 20px 60px rgba(0,0,0,.35);
+    :root {
+      --bg: #232531;
+      --bg-deep: #1d1f2a;
+      --panel: #2b2e3b;
+      --panel-soft: #303443;
+      --text: #d7d9e4;
+      --muted: #777d91;
+      --muted-2: #585f72;
+      --gold: #f3b11d;
+      --gold-soft: rgba(243, 177, 29, 0.14);
+      --red: #ff5d6c;
+      --red-soft: rgba(255, 93, 108, 0.16);
+      --green: #62d996;
+      --line: rgba(255, 255, 255, 0.08);
+      --shadow: 0 30px 90px rgba(0, 0, 0, 0.32);
+      --mono: "Cascadia Mono", "Consolas", "Courier New", monospace;
+      --sans: "Segoe UI", Tahoma, Arial, sans-serif;
     }
-    body.light{
-      --bg:#f8fafc;
-      --bg2:#eef2ff;
-      --card:rgba(255,255,255,.8);
-      --text:#0f172a;
-      --muted:#475569;
-      --border:#dbe3ee;
-      --shadow:0 20px 60px rgba(15,23,42,.12);
+
+    * {
+      box-sizing: border-box;
     }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100%;
       background:
-        radial-gradient(circle at top right, rgba(139,92,246,.18), transparent 25%),
-        radial-gradient(circle at bottom left, rgba(6,182,212,.15), transparent 30%),
-        linear-gradient(180deg,var(--bg),var(--bg2));
-      color:var(--text);
-      min-height:100vh;
+        linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 34%),
+        radial-gradient(circle at top, rgba(243, 177, 29, 0.08), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      overflow-x: hidden;
     }
-    a{color:inherit;text-decoration:none}
-    button,input{font:inherit}
-    .container{width:min(1180px, calc(100% - 24px)); margin-inline:auto;}
-    .topbar{
-      position:sticky; top:0; z-index:50;
-      backdrop-filter:blur(16px);
-      background:color-mix(in srgb, var(--bg) 70%, transparent);
-      border-bottom:1px solid var(--border);
+
+    button,
+    input,
+    textarea {
+      font: inherit;
     }
-    .topbar-inner{
-      display:flex; align-items:center; justify-content:space-between; gap:16px;
-      padding:14px 0;
+
+    button {
+      border: 0;
+      cursor: pointer;
     }
-    .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:1.1rem}
-    .logo{
-      width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
-      background:linear-gradient(135deg,var(--primary),var(--primary2));
-      box-shadow:var(--shadow);
+
+    .app {
+      width: min(1180px, calc(100% - 40px));
+      min-height: 100%;
+      margin: 0 auto;
+      padding: 30px 0 42px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
     }
-    .nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-    .nav a,.theme-btn,.btn{
-      border:1px solid var(--border);
-      background:color-mix(in srgb, var(--card) 88%, transparent);
-      color:var(--text);
-      border-radius:14px;
-      padding:10px 14px;
-      transition:.25s ease;
-      cursor:pointer;
-      box-shadow:var(--shadow);
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      color: var(--muted);
     }
-    .nav a:hover,.theme-btn:hover,.btn:hover{transform:translateY(-2px)}
-    .hero{padding:42px 0 18px}
-    .hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:20px}
-    .glass{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:28px;
-      box-shadow:var(--shadow);
-      backdrop-filter:blur(12px);
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 19px;
+      font-weight: 800;
+      direction: ltr;
+      letter-spacing: 0;
+      color: #c8ccd8;
     }
-    .hero-card{padding:34px;min-height:320px;position:relative;overflow:hidden}
-    .hero-card::before{
-      content:"";position:absolute;inset:auto -80px -100px auto;width:260px;height:260px;border-radius:50%;
-      background:radial-gradient(circle, rgba(139,92,246,.35), transparent 65%);
-      pointer-events:none;
+
+    .brand-mark {
+      width: 28px;
+      height: 20px;
+      border: 2px solid var(--muted-2);
+      border-radius: 6px;
+      position: relative;
     }
-    .eyebrow{
-      display:inline-flex;gap:8px;align-items:center;
-      background:color-mix(in srgb, var(--primary) 16%, transparent);
-      border:1px solid color-mix(in srgb, var(--primary) 25%, var(--border));
-      padding:8px 12px;border-radius:999px;font-size:.95rem;margin-bottom:14px;
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      top: 6px;
+      width: 4px;
+      height: 4px;
+      border-radius: 1px;
+      background: var(--muted-2);
+      box-shadow: 7px 0 0 var(--muted-2), 14px 0 0 var(--muted-2);
     }
-    h1{margin:0 0 12px;font-size:clamp(2rem,4vw,4rem);line-height:1.1}
-    .lead{margin:0;color:var(--muted);line-height:1.8;max-width:60ch;font-size:1.05rem}
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
-    .btn.primary{background:linear-gradient(135deg,var(--primary),var(--primary2));border-color:transparent;color:#fff;font-weight:700}
-    .stats{display:grid;gap:14px}
-    .stat{padding:22px;display:flex;flex-direction:column;justify-content:center;min-height:95px}
-    .stat b{font-size:1.6rem;margin-bottom:4px}
-    .stat span{color:var(--muted)}
-    .section{padding:18px 0 28px}
-    .section-title{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:16px}
-    .section-title h2{margin:0;font-size:1.6rem}
-    .section-title p{margin:0;color:var(--muted)}
-    .games-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-    .game-card{
-      padding:18px;cursor:pointer;transition:.25s ease;min-height:160px;
-      display:flex;flex-direction:column;justify-content:space-between;
+
+    .brand-mark::before {
+      left: 5px;
     }
-    .game-card:hover{transform:translateY(-4px)}
-    .game-icon{
-      width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:1.6rem;
-      background:linear-gradient(135deg, color-mix(in srgb, var(--primary) 30%, transparent), color-mix(in srgb, var(--primary2) 20%, transparent));
-      border:1px solid var(--border);
+
+    .brand-mark::after {
+      display: none;
     }
-    .game-card h3{margin:14px 0 6px;font-size:1.15rem}
-    .game-card p{margin:0;color:var(--muted);line-height:1.6;font-size:.95rem}
-    .game-section{padding:12px 0 28px}
-    .game-shell{padding:22px}
-    .game-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-    .game-header h3{margin:0;font-size:1.4rem}
-    .game-header .small{color:var(--muted);margin-top:6px;font-size:.95rem}
-    .panel{display:grid;gap:16px}
-    .panel-row{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start}
-    .box{
-      background:color-mix(in srgb, var(--card) 82%, transparent);
-      border:1px solid var(--border);
-      border-radius:22px;
-      padding:18px;
+
+    .brand span {
+      color: var(--gold);
     }
-    .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .score{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .score-item{text-align:center;padding:14px 10px;border-radius:16px;background:color-mix(in srgb, var(--bg) 55%, transparent);border:1px solid var(--border)}
-    .score-item b{display:block;font-size:1.35rem;margin-bottom:2px}
-    .score-item span{color:var(--muted);font-size:.92rem}
-    .result{
-      margin-top:14px;min-height:52px;display:flex;align-items:center;justify-content:center;text-align:center;
-      border-radius:16px;padding:12px 14px;background:color-mix(in srgb, var(--bg) 55%, transparent);border:1px solid var(--border);line-height:1.8
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
     }
-    .rps-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-    .choice-btn{padding:14px 12px;font-weight:700;font-size:1rem;border-radius:16px;border:none;color:#fff}
-    .choice-btn:nth-child(1){background:linear-gradient(135deg,#3b82f6,#60a5fa)}
-    .choice-btn:nth-child(2){background:linear-gradient(135deg,#f59e0b,#fbbf24)}
-    .choice-btn:nth-child(3){background:linear-gradient(135deg,#10b981,#34d399)}
-    .ttt-board{
-      display:grid;grid-template-columns:repeat(3,minmax(80px,1fr));gap:10px;max-width:420px;margin-inline:auto
+
+    .ghost-button,
+    .primary-button,
+    .icon-button {
+      min-height: 38px;
+      color: var(--muted);
+      background: transparent;
+      border-radius: 8px;
+      transition: color 160ms ease, background 160ms ease, transform 160ms ease;
     }
-    .ttt-cell{
-      aspect-ratio:1;border-radius:20px;border:1px solid var(--border);
-      background:linear-gradient(180deg, color-mix(in srgb, var(--card) 90%, transparent), color-mix(in srgb, var(--bg) 50%, transparent));
-      color:var(--text);font-size:2rem;font-weight:800;cursor:pointer;transition:.2s ease;box-shadow:var(--shadow)
+
+    .ghost-button {
+      padding: 0 13px;
+      border: 1px solid transparent;
     }
-    .ttt-cell:hover{transform:translateY(-2px)}
-    .ttt-cell.filled{cursor:default}
-    .input-row{display:flex;gap:10px;flex-wrap:wrap}
-    input[type="number"]{
-      flex:1;min-width:180px;padding:13px 14px;border-radius:16px;border:1px solid var(--border);
-      background:color-mix(in srgb, var(--bg) 55%, transparent);color:var(--text);outline:none
+
+    .ghost-button:hover,
+    .icon-button:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
     }
-    input[type="number"]::placeholder{color:color-mix(in srgb, var(--muted) 80%, transparent)}
-    .memory-grid{display:grid;grid-template-columns:repeat(4,minmax(70px,1fr));gap:10px;max-width:560px;margin-inline:auto}
-    .memory-card{
-      aspect-ratio:1;border-radius:18px;border:1px solid var(--border);
-      background:linear-gradient(135deg, color-mix(in srgb, var(--primary) 20%, transparent), color-mix(in srgb, var(--primary2) 18%, transparent));
-      color:var(--text);font-size:2rem;cursor:pointer;display:grid;place-items:center;transition:.2s ease;box-shadow:var(--shadow);user-select:none
+
+    .primary-button {
+      padding: 0 17px;
+      color: var(--bg-deep);
+      background: var(--gold);
+      font-weight: 800;
+      box-shadow: 0 12px 30px rgba(243, 177, 29, 0.18);
     }
-    .memory-card:hover{transform:translateY(-2px)}
-    .memory-card.flipped,.memory-card.matched{background:color-mix(in srgb, var(--bg) 60%, transparent);font-size:2.2rem}
-    .memory-card.matched{outline:2px solid color-mix(in srgb, var(--accent) 50%, transparent)}
-    .footer{padding:18px 0 30px;color:var(--muted);text-align:center}
-    .hint{color:var(--muted);font-size:.95rem;line-height:1.7}
-    .badge{
-      display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;
-      background:color-mix(in srgb, var(--accent) 15%, transparent);
-      border:1px solid color-mix(in srgb, var(--accent) 22%, var(--border));
-      font-size:.9rem;
+
+    .primary-button:hover {
+      transform: translateY(-1px);
+      background: #ffc13b;
     }
-    @media (max-width:980px){
-      .hero-grid,.panel-row,.games-grid{grid-template-columns:1fr}
-      .stats{grid-template-columns:repeat(3,1fr)}
+
+    .icon-button {
+      width: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid transparent;
+      font-family: var(--mono);
+      font-weight: 800;
     }
-    @media (max-width:720px){
-      .topbar-inner{flex-direction:column;align-items:stretch}
-      .nav{justify-content:space-between}
-      .stats{grid-template-columns:1fr}
-      .hero-card{padding:24px}
-      .game-shell{padding:16px}
-      .memory-grid{grid-template-columns:repeat(4,minmax(58px,1fr))}
-      .ttt-board{grid-template-columns:repeat(3,minmax(68px,1fr))}
+
+    .settings {
+      background: rgba(30, 32, 43, 0.78);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .setting-group {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .setting-label {
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .segmented {
+      display: flex;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .segmented button {
+      flex: 1;
+      min-width: 0;
+      height: 34px;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 700;
+      transition: background 160ms ease, color 160ms ease;
+    }
+
+    .segmented button.active {
+      background: var(--gold-soft);
+      color: var(--gold);
+    }
+
+    .duration-input {
+      width: 86px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 0 10px;
+      background: var(--bg-deep);
+      color: var(--gold);
+      outline: 0;
+      text-align: center;
+      direction: ltr;
+      font-family: var(--mono);
+      font-weight: 800;
+    }
+
+    .custom-box {
+      display: none;
+      background: rgba(30, 32, 43, 0.74);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    .custom-box.active {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .custom-box textarea {
+      min-height: 98px;
+      max-height: 190px;
+      resize: vertical;
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px 15px;
+      background: var(--bg-deep);
+      color: var(--text);
+      outline: 0;
+      line-height: 1.8;
+    }
+
+    .custom-box textarea:focus {
+      border-color: rgba(243, 177, 29, 0.55);
+      box-shadow: 0 0 0 4px rgba(243, 177, 29, 0.08);
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 22px;
+      align-items: center;
+      min-height: 460px;
+    }
+
+    .metrics {
+      display: grid;
+      gap: 16px;
+      align-content: center;
+    }
+
+    .metric {
+      display: grid;
+      gap: 1px;
+      font-family: var(--mono);
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 800;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .metric strong {
+      color: var(--gold);
+      font-size: clamp(34px, 5vw, 54px);
+      line-height: 0.95;
+      direction: ltr;
+      text-align: left;
+      letter-spacing: 0;
+    }
+
+    .metric small {
+      color: var(--muted-2);
+      font-size: 12px;
+      text-align: left;
+      direction: ltr;
+      min-height: 18px;
+    }
+
+    .typing-card {
+      min-height: 380px;
+      border-radius: 8px;
+      position: relative;
+      display: grid;
+      place-items: center;
+      padding: 32px 26px;
+      outline: 0;
+      overflow: hidden;
+    }
+
+    .typing-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.045), transparent),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent);
+      opacity: 0;
+      transform: translateX(-18%);
+      transition: opacity 180ms ease, transform 500ms ease;
+      pointer-events: none;
+    }
+
+    .typing-card:focus-within::before,
+    .typing-card.active::before {
+      opacity: 1;
+      transform: translateX(18%);
+    }
+
+    .stage {
+      width: min(900px, 100%);
+      display: grid;
+      justify-items: center;
+      gap: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .counter {
+      font-family: var(--mono);
+      color: var(--gold);
+      font-size: clamp(50px, 8.6vw, 92px);
+      font-weight: 900;
+      line-height: 1;
+      direction: ltr;
+      letter-spacing: 0;
+    }
+
+    .word-stage {
+      width: 100%;
+      min-height: 118px;
+      font-family: var(--mono);
+      font-size: clamp(25px, 3.5vw, 43px);
+      font-weight: 800;
+      line-height: 1.6;
+      text-align: center;
+      color: var(--gold);
+      overflow-wrap: anywhere;
+      letter-spacing: 0;
+      user-select: none;
+    }
+
+    .word-stage[dir="ltr"] {
+      text-align: left;
+    }
+
+    .word-stage[dir="rtl"] {
+      text-align: right;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      font-weight: 800;
+    }
+
+    .char {
+      position: relative;
+      color: var(--gold);
+      border-radius: 4px;
+      transition: color 80ms ease, background 80ms ease;
+    }
+
+    .char.correct {
+      color: var(--muted);
+    }
+
+    .char.incorrect {
+      color: var(--red);
+      background: var(--red-soft);
+      text-decoration: underline;
+      text-decoration-thickness: 3px;
+      text-underline-offset: 5px;
+    }
+
+    .char.cursor::before {
+      content: "";
+      position: absolute;
+      width: 3px;
+      height: 1.2em;
+      top: 0.17em;
+      inset-inline-start: -2px;
+      border-radius: 999px;
+      background: #f2f4fb;
+      animation: blink 1s steps(2, start) infinite;
+    }
+
+    .char.space.incorrect {
+      background: rgba(255, 93, 108, 0.28);
+      text-decoration: none;
+    }
+
+    .typing-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+      resize: none;
+      border: 0;
+      padding: 0;
+      left: 50%;
+      top: 50%;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      min-height: 46px;
+    }
+
+    .status-line {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 13px;
+      direction: ltr;
+      text-align: center;
+      min-height: 20px;
+    }
+
+    .results {
+      display: none;
+      grid-template-columns: 210px 1fr;
+      gap: 20px;
+      align-items: stretch;
+      background: rgba(30, 32, 43, 0.7);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .results.active {
+      display: grid;
+    }
+
+    .result-stack {
+      display: grid;
+      gap: 12px;
+      align-content: center;
+    }
+
+    .result-card {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 13px;
+      font-family: var(--mono);
+      direction: ltr;
+      text-align: left;
+    }
+
+    .result-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .result-card strong {
+      color: var(--gold);
+      font-size: 31px;
+      line-height: 1.1;
+    }
+
+    .chart-wrap {
+      min-height: 250px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+      padding: 12px;
+      position: relative;
+    }
+
+    #resultChart {
+      width: 100%;
+      height: 100%;
+      min-height: 226px;
+      display: block;
+    }
+
+    .legend {
+      position: absolute;
+      inset-inline-start: 18px;
+      top: 14px;
+      display: flex;
+      gap: 13px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      direction: ltr;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend span::before {
+      content: "";
+      width: 18px;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--gold);
+    }
+
+    .legend span:nth-child(2)::before {
+      background: #8b90a5;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .settings {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .dashboard {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .metrics {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .metric strong {
+        font-size: 34px;
+      }
+
+      .typing-card {
+        min-height: 360px;
+      }
+
+      .results {
+        grid-template-columns: 1fr;
+      }
+
+      .result-stack {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .app {
+        width: min(100% - 22px, 1180px);
+        padding-top: 16px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .top-actions {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .settings,
+      .custom-box.active,
+      .metrics,
+      .result-stack {
+        grid-template-columns: 1fr;
+      }
+
+      .setting-group {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .custom-box.active {
+        align-items: stretch;
+      }
+
+      .typing-card {
+        padding: 26px 12px;
+      }
+
+      .word-stage {
+        font-size: 25px;
+        min-height: 190px;
+      }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <div class="brand">
-        <div class="logo">🎮</div>
-        <div>
-          <div>GameHub</div>
-          <div style="font-size:.85rem;color:var(--muted);font-weight:600;">موقع ميني قيمز مرتب ومطور</div>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand" aria-label="SpeedType">
+        <span class="brand-mark" aria-hidden="true"></span>
+        speed<span>type</span>
+      </div>
+
+      <div class="top-actions">
+        <button class="ghost-button" id="newTextBtn" type="button">نص جديد</button>
+        <button class="ghost-button" id="resetBtn" type="button">إعادة</button>
+        <button class="primary-button" id="startBtn" type="button">ابدأ</button>
+      </div>
+    </header>
+
+    <section class="settings" aria-label="إعدادات الاختبار">
+      <div class="setting-group">
+        <span class="setting-label">اللغة</span>
+        <div class="segmented" id="languageButtons">
+          <button type="button" class="active" data-language="ar">عربي</button>
+          <button type="button" data-language="en">English</button>
         </div>
       </div>
 
-      <nav class="nav">
-        <a href="#home">الرئيسية</a>
-        <a href="#games">الألعاب</a>
-        <a href="#rps">حجر ورقة مقص</a>
-        <a href="#tictactoe">إكس-أو</a>
-        <a href="#guess">خمن الرقم</a>
-        <a href="#memory">الذاكرة</a>
-      </nav>
+      <div class="setting-group">
+        <span class="setting-label">النص</span>
+        <div class="segmented" id="sourceButtons">
+          <button type="button" class="active" data-source="sample">جاهز</button>
+          <button type="button" data-source="custom">مخصص</button>
+        </div>
+      </div>
 
-      <button class="theme-btn" id="themeToggle">🌙 تبديل الوضع</button>
+      <div class="setting-group">
+        <span class="setting-label">الوقت</span>
+        <div class="segmented" id="timeButtons">
+          <button type="button" class="active" data-time="30">30</button>
+          <button type="button" data-time="60">60</button>
+          <button type="button" data-time="120">120</button>
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <span class="setting-label">ثواني</span>
+        <input class="duration-input" id="durationInput" type="number" min="5" max="600" step="5" value="30" inputmode="numeric" />
+      </div>
+    </section>
+
+    <section class="custom-box" id="customBox" aria-label="النص المخصص">
+      <textarea id="customText" spellcheck="false">الكتابة السريعة مهارة تتحسن بالتدريب اليومي. اكتب بهدوء في البداية، ثم ارفع سرعتك عندما تصبح الحروف واضحة أمامك.</textarea>
+      <button class="primary-button" id="applyCustomBtn" type="button">اعتماد</button>
+    </section>
+
+    <main class="dashboard">
+      <aside class="metrics" aria-label="إحصائيات الاختبار">
+        <div class="metric">
+          <span>wpm</span>
+          <strong id="wpmDisplay">0</strong>
+          <small>words/min</small>
+        </div>
+        <div class="metric">
+          <span>acc</span>
+          <strong id="accuracyDisplay">100%</strong>
+          <small>accuracy</small>
+        </div>
+        <div class="metric">
+          <span>err</span>
+          <strong id="errorDisplay">0</strong>
+          <small>mistakes</small>
+        </div>
+        <div class="metric">
+          <span>time</span>
+          <strong id="timeDisplay">0/30</strong>
+          <small>seconds</small>
+        </div>
+      </aside>
+
+      <section class="typing-card" id="typingCard" tabindex="-1" aria-label="منطقة الكتابة">
+        <div class="stage">
+          <div class="counter" id="progressDisplay">0/0</div>
+          <div class="word-stage" id="textDisplay" dir="rtl"></div>
+          <div class="status-line" id="statusLine">ready</div>
+        </div>
+        <textarea class="typing-input" id="typingInput" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+      </section>
+    </main>
+
+    <div class="controls" aria-label="أوامر الاختبار">
+      <button class="icon-button" id="focusBtn" type="button" title="تركيز">></button>
+      <button class="icon-button" id="clearBtn" type="button" title="مسح">x</button>
+      <button class="icon-button" id="againBtn" type="button" title="إعادة">r</button>
     </div>
-  </header>
 
-  <main class="container">
-    <section class="hero" id="home">
-      <div class="hero-grid">
-        <div class="glass hero-card">
-          <div class="eyebrow">✨ موقع ألعاب خفيف، أنيق، وسريع</div>
-          <h1>موقع ميني قيمز مرتب واحترافي</h1>
-          <p class="lead">
-            قالب جاهز بالعربي وفيه ألعاب صغيرة منظمة، وتصميم حديث، ومتجاوب مع الجوال،
-            وتقدر تطوره وتعدله بسهولة.
-          </p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#games">ابدأ اللعب</a>
-            <a class="btn" href="#memory">أفضل لعبة</a>
-          </div>
+    <section class="results" id="resultsPanel" aria-label="نتيجة الاختبار">
+      <div class="result-stack">
+        <div class="result-card">
+          <span>wpm</span>
+          <strong id="finalWpm">0</strong>
         </div>
-
-        <div class="stats">
-          <div class="glass stat"><b>4</b><span>ألعاب جاهزة</span></div>
-          <div class="glass stat"><b>100%</b><span>متجاوب</span></div>
-          <div class="glass stat"><b>RTL</b><span>دعم عربي كامل</span></div>
+        <div class="result-card">
+          <span>acc</span>
+          <strong id="finalAccuracy">0%</strong>
         </div>
+        <div class="result-card">
+          <span>chars</span>
+          <strong id="finalChars">0/0</strong>
+        </div>
+        <div class="result-card">
+          <span>best</span>
+          <strong id="bestWpm">0</strong>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <div class="legend">
+          <span>wpm</span>
+          <span>acc</span>
+        </div>
+        <canvas id="resultChart"></canvas>
       </div>
     </section>
-
-    <section class="section" id="games">
-      <div class="section-title">
-        <div>
-          <h2>الألعاب المتوفرة</h2>
-          <p>اضغط على أي لعبة وابدأ مباشرة</p>
-        </div>
-      </div>
-
-      <div class="games-grid">
-        <a class="glass game-card" href="#rps">
-          <div class="game-icon">✊</div>
-          <div>
-            <h3>حجر ورقة مقص</h3>
-            <p>نتائج فورية مع نظام نقاط بسيط.</p>
-          </div>
-        </a>
-        <a class="glass game-card" href="#tictactoe">
-          <div class="game-icon">❌</div>
-          <div>
-            <h3>إكس-أو</h3>
-            <p>لعبة كلاسيكية مع تتبع الفائز والتعادل.</p>
-          </div>
-        </a>
-        <a class="glass game-card" href="#guess">
-          <div class="game-icon">🔢</div>
-          <div>
-            <h3>خمن الرقم</h3>
-            <p>اختر رقم بين 1 و 100 بأقل محاولات.</p>
-          </div>
-        </a>
-        <a class="glass game-card" href="#memory">
-          <div class="game-icon">🧠</div>
-          <div>
-            <h3>لعبة الذاكرة</h3>
-            <p>اقلب البطاقات وطابق الأزواج المتشابهة.</p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <section class="game-section" id="rps">
-      <div class="glass game-shell">
-        <div class="game-header">
-          <div>
-            <h3>✊ حجر ورقة مقص</h3>
-            <div class="small">اختَر لعبتك وشوف من يفوز</div>
-          </div>
-          <div class="badge">نظام نقاط مباشر</div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-row">
-            <div class="box">
-              <div class="rps-buttons">
-                <button class="choice-btn" data-choice="rock">✊ حجر</button>
-                <button class="choice-btn" data-choice="paper">✋ ورقة</button>
-                <button class="choice-btn" data-choice="scissors">✌️ مقص</button>
-              </div>
-
-              <div class="result" id="rpsResult">اختر حركة وابدأ اللعب الآن</div>
-
-              <div class="controls">
-                <button class="btn" id="rpsReset">إعادة التصفير</button>
-              </div>
-            </div>
-
-            <div class="box">
-              <div class="score">
-                <div class="score-item"><b id="playerScore">0</b><span>أنت</span></div>
-                <div class="score-item"><b id="drawScore">0</b><span>تعادل</span></div>
-                <div class="score-item"><b id="cpuScore">0</b><span>الكمبيوتر</span></div>
-              </div>
-              <p class="hint" style="margin:14px 0 0;">الحجر يهزم المقص، المقص يهزم الورقة، الورقة تهزم الحجر.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="game-section" id="tictactoe">
-      <div class="glass game-shell">
-        <div class="game-header">
-          <div>
-            <h3>❌ لعبة إكس-أو</h3>
-            <div class="small" id="tttStatus">الدور على اللاعب X</div>
-          </div>
-          <div class="badge">لعب محلي 2 لاعبين</div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-row">
-            <div class="box">
-              <div class="ttt-board" id="tttBoard"></div>
-              <div class="result" id="tttResult">ابدأ اللعب من اللوحة</div>
-              <div class="controls">
-                <button class="btn primary" id="tttReset">إعادة اللعبة</button>
-              </div>
-            </div>
-
-            <div class="box">
-              <div class="score">
-                <div class="score-item"><b id="xWins">0</b><span>فوز X</span></div>
-                <div class="score-item"><b id="draws">0</b><span>تعادل</span></div>
-                <div class="score-item"><b id="oWins">0</b><span>فوز O</span></div>
-              </div>
-              <p class="hint" style="margin:14px 0 0;">إذا انتهت الجولة، تقدر تعيد اللعب من زر إعادة اللعبة.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="game-section" id="guess">
-      <div class="glass game-shell">
-        <div class="game-header">
-          <div>
-            <h3>🔢 خمن الرقم</h3>
-            <div class="small">الرقم بين 1 و 100</div>
-          </div>
-          <div class="badge">تحدي سريع</div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-row">
-            <div class="box">
-              <div class="input-row">
-                <input type="number" id="guessInput" placeholder="اكتب رقمك هنا" min="1" max="100" />
-                <button class="btn primary" id="guessBtn">تأكيد التخمين</button>
-              </div>
-
-              <div class="result" id="guessResult">جرب حظك واكتب رقم</div>
-
-              <div class="controls">
-                <button class="btn" id="guessReset">رقم جديد</button>
-              </div>
-            </div>
-
-            <div class="box">
-              <div class="score">
-                <div class="score-item"><b id="guessTries">0</b><span>محاولات</span></div>
-                <div class="score-item"><b id="guessBest">—</b><span>أفضل نتيجة</span></div>
-                <div class="score-item"><b>1-100</b><span>النطاق</span></div>
-              </div>
-              <p class="hint" style="margin:14px 0 0;">إذا كان الرقم بعيد، يعطيك النظام تلميح أعلى أو أقل.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="game-section" id="memory">
-      <div class="glass game-shell">
-        <div class="game-header">
-          <div>
-            <h3>🧠 لعبة الذاكرة</h3>
-            <div class="small">اقلب البطاقات وطابق الأزواج</div>
-          </div>
-          <div class="badge">8 أزواج</div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-row">
-            <div class="box">
-              <div class="memory-grid" id="memoryGrid"></div>
-
-              <div class="result" id="memoryResult">ابدأ وحاول تنهي اللعبة بأقل عدد من الحركات</div>
-
-              <div class="controls">
-                <button class="btn primary" id="memoryReset">إعادة الترتيب</button>
-              </div>
-            </div>
-
-            <div class="box">
-              <div class="score">
-                <div class="score-item"><b id="memoryMoves">0</b><span>حركات</span></div>
-                <div class="score-item"><b id="memoryMatches">0</b><span>أزواج</span></div>
-                <div class="score-item"><b>16</b><span>بطاقة</span></div>
-              </div>
-              <p class="hint" style="margin:14px 0 0;">اللعبة تعيد الترتيب بشكل عشوائي كل مرة.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <div class="footer">صممته لك بشكل نظيف ومرتب — وتقدر تطوره أكثر بأي وقت.</div>
-  </main>
+  </div>
 
   <script>
-    // ===== الوضع الليلي / الفاتح =====
-    const themeToggle = document.getElementById('themeToggle');
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') document.body.classList.add('light');
+    const samples = {
+      ar: [
+        "يعتمد التطور الحقيقي على الاستمرار في المحاولة حتى عندما تكون البداية بطيئة. كل دقيقة تدريب تضيف ثقة جديدة وتساعدك على قراءة الحروف قبل أن تصل أصابعك إليها.",
+        "في الصباح الهادئ تصبح الأفكار أوضح، وتتحول الكتابة إلى إيقاع ثابت بين العين واليد. السرعة لا تأتي من العجلة بل من الدقة والراحة.",
+        "كل نص تكتبه اليوم يصنع نسخة أسرع منك غدا. راقب الأخطاء، صحح المسار، واترك أصابعك تتعلم الطريق كلمة بعد كلمة."
+      ],
+      en: [
+        "Practice turns slow typing into a calm rhythm. Keep your eyes ahead of your fingers, stay relaxed, and let each clean word build more speed.",
+        "The best typing runs feel smooth because accuracy comes first. When mistakes appear, slow down for a moment and return to a steady pace.",
+        "A focused minute can teach your hands a lot. Read the next words early, press each key with purpose, and keep the flow moving forward."
+      ]
+    };
 
-    function updateThemeButton() {
-      themeToggle.textContent = document.body.classList.contains('light')
-        ? '☀️ الوضع الفاتح'
-        : '🌙 تبديل الوضع';
-    }
-    updateThemeButton();
+    const els = {
+      languageButtons: document.getElementById("languageButtons"),
+      sourceButtons: document.getElementById("sourceButtons"),
+      timeButtons: document.getElementById("timeButtons"),
+      durationInput: document.getElementById("durationInput"),
+      customBox: document.getElementById("customBox"),
+      customText: document.getElementById("customText"),
+      applyCustomBtn: document.getElementById("applyCustomBtn"),
+      typingCard: document.getElementById("typingCard"),
+      typingInput: document.getElementById("typingInput"),
+      textDisplay: document.getElementById("textDisplay"),
+      progressDisplay: document.getElementById("progressDisplay"),
+      statusLine: document.getElementById("statusLine"),
+      wpmDisplay: document.getElementById("wpmDisplay"),
+      accuracyDisplay: document.getElementById("accuracyDisplay"),
+      errorDisplay: document.getElementById("errorDisplay"),
+      timeDisplay: document.getElementById("timeDisplay"),
+      resultsPanel: document.getElementById("resultsPanel"),
+      finalWpm: document.getElementById("finalWpm"),
+      finalAccuracy: document.getElementById("finalAccuracy"),
+      finalChars: document.getElementById("finalChars"),
+      bestWpm: document.getElementById("bestWpm"),
+      resultChart: document.getElementById("resultChart"),
+      startBtn: document.getElementById("startBtn"),
+      resetBtn: document.getElementById("resetBtn"),
+      newTextBtn: document.getElementById("newTextBtn"),
+      focusBtn: document.getElementById("focusBtn"),
+      clearBtn: document.getElementById("clearBtn"),
+      againBtn: document.getElementById("againBtn")
+    };
 
-    themeToggle.addEventListener('click', () => {
-      document.body.classList.toggle('light');
-      localStorage.setItem('theme', document.body.classList.contains('light') ? 'light' : 'dark');
-      updateThemeButton();
-    });
+    const state = {
+      language: "ar",
+      source: "sample",
+      duration: 30,
+      sampleIndex: 0,
+      targetText: "",
+      started: false,
+      finished: false,
+      startTime: 0,
+      elapsedMs: 0,
+      timerId: 0,
+      lastSampleSecond: -1,
+      chartSamples: []
+    };
 
-    // ===== حجر ورقة مقص =====
-    const rpsButtons = document.querySelectorAll('[data-choice]');
-    const rpsResult = document.getElementById('rpsResult');
-    const playerScoreEl = document.getElementById('playerScore');
-    const drawScoreEl = document.getElementById('drawScore');
-    const cpuScoreEl = document.getElementById('cpuScore');
-    const rpsReset = document.getElementById('rpsReset');
-
-    let playerScore = 0, drawScore = 0, cpuScore = 0;
-    const choices = ['rock', 'paper', 'scissors'];
-    const choiceText = { rock:'حجر', paper:'ورقة', scissors:'مقص' };
-
-    function getWinner(player, cpu) {
-      if (player === cpu) return 'draw';
-      if (
-        (player === 'rock' && cpu === 'scissors') ||
-        (player === 'paper' && cpu === 'rock') ||
-        (player === 'scissors' && cpu === 'paper')
-      ) return 'player';
-      return 'cpu';
-    }
-
-    rpsButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const playerChoice = btn.dataset.choice;
-        const cpuChoice = choices[Math.floor(Math.random() * choices.length)];
-        const winner = getWinner(playerChoice, cpuChoice);
-
-        if (winner === 'draw') {
-          drawScore++;
-          rpsResult.textContent = `تعادل! اخترت ${choiceText[playerChoice]} والكمبيوتر اختار ${choiceText[cpuChoice]}.`;
-        } else if (winner === 'player') {
-          playerScore++;
-          rpsResult.textContent = `فزت! ${choiceText[playerChoice]} يهزم ${choiceText[cpuChoice]}.`;
-        } else {
-          cpuScore++;
-          rpsResult.textContent = `خسرت! الكمبيوتر اختار ${choiceText[cpuChoice]} وفاز هذه الجولة.`;
-        }
-
-        playerScoreEl.textContent = playerScore;
-        drawScoreEl.textContent = drawScore;
-        cpuScoreEl.textContent = cpuScore;
-      });
-    });
-
-    rpsReset.addEventListener('click', () => {
-      playerScore = 0; drawScore = 0; cpuScore = 0;
-      playerScoreEl.textContent = 0;
-      drawScoreEl.textContent = 0;
-      cpuScoreEl.textContent = 0;
-      rpsResult.textContent = 'تم تصفير النقاط. ابدأ من جديد!';
-    });
-
-    // ===== إكس-أو =====
-    const tttBoardEl = document.getElementById('tttBoard');
-    const tttResult = document.getElementById('tttResult');
-    const tttStatus = document.getElementById('tttStatus');
-    const tttReset = document.getElementById('tttReset');
-    const xWinsEl = document.getElementById('xWins');
-    const oWinsEl = document.getElementById('oWins');
-    const drawsEl = document.getElementById('draws');
-
-    let tttBoard = Array(9).fill('');
-    let currentPlayer = 'X';
-    let tttActive = true;
-    let xWins = 0, oWins = 0, draws = 0;
-
-    function renderTTT() {
-      tttBoardEl.innerHTML = '';
-      tttBoard.forEach((cell, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'ttt-cell' + (cell ? ' filled' : '');
-        btn.textContent = cell;
-        btn.addEventListener('click', () => handleTTTClick(index));
-        tttBoardEl.appendChild(btn);
-      });
+    function normalizeText(value) {
+      return String(value || "")
+        .replace(/\u00a0/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
     }
 
-    function checkTTTWinner(board) {
-      const combos = [
-        [0,1,2],[3,4,5],[6,7,8],
-        [0,3,6],[1,4,7],[2,5,8],
-        [0,4,8],[2,4,6]
-      ];
-      for (const [a,b,c] of combos) {
-        if (board[a] && board[a] === board[b] && board[a] === board[c]) return board[a];
-      }
-      return board.includes('') ? null : 'draw';
+    function getTextDirection() {
+      return state.language === "ar" ? "rtl" : "ltr";
     }
 
-    function handleTTTClick(index) {
-      if (!tttActive || tttBoard[index]) return;
-
-      tttBoard[index] = currentPlayer;
-      const winner = checkTTTWinner(tttBoard);
-
-      if (winner) {
-        renderTTT();
-
-        if (winner === 'draw') {
-          draws++;
-          drawsEl.textContent = draws;
-          tttResult.textContent = 'انتهت المباراة بالتعادل.';
-          tttStatus.textContent = 'تعادل';
-        } else if (winner === 'X') {
-          xWins++;
-          xWinsEl.textContent = xWins;
-          tttResult.textContent = 'فاز اللاعب X!';
-          tttStatus.textContent = 'فاز X';
-        } else {
-          oWins++;
-          oWinsEl.textContent = oWins;
-          tttResult.textContent = 'فاز اللاعب O!';
-          tttStatus.textContent = 'فاز O';
-        }
-
-        tttActive = false;
-        return;
-      }
-
-      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-      tttStatus.textContent = `الدور على اللاعب ${currentPlayer}`;
-      tttResult.textContent = `تم اختيار خانة جديدة. الآن الدور على ${currentPlayer}`;
-      renderTTT();
-    }
-
-    function resetTTT() {
-      tttBoard = Array(9).fill('');
-      currentPlayer = 'X';
-      tttActive = true;
-      tttStatus.textContent = 'الدور على اللاعب X';
-      tttResult.textContent = 'ابدأ اللعب من اللوحة';
-      renderTTT();
-    }
-
-    tttReset.addEventListener('click', resetTTT);
-    renderTTT();
-
-    // ===== خمن الرقم =====
-    const guessInput = document.getElementById('guessInput');
-    const guessBtn = document.getElementById('guessBtn');
-    const guessResult = document.getElementById('guessResult');
-    const guessReset = document.getElementById('guessReset');
-    const guessTriesEl = document.getElementById('guessTries');
-    const guessBestEl = document.getElementById('guessBest');
-
-    let secretNumber = randomNumber();
-    let guessTries = 0;
-    let bestScore = null;
-
-    function randomNumber() {
-      return Math.floor(Math.random() * 100) + 1;
-    }
-
-    function resetGuess() {
-      secretNumber = randomNumber();
-      guessTries = 0;
-      guessTriesEl.textContent = 0;
-      guessInput.value = '';
-      guessResult.textContent = 'تم إنشاء رقم جديد. ابدأ التخمين!';
-    }
-
-    function submitGuess() {
-      const value = Number(guessInput.value);
-
-      if (!value || value < 1 || value > 100) {
-        guessResult.textContent = 'رجاءً اكتب رقم صحيح بين 1 و 100.';
-        return;
-      }
-
-      guessTries++;
-      guessTriesEl.textContent = guessTries;
-
-      if (value === secretNumber) {
-        guessResult.textContent = `ممتاز! عرفت الرقم الصحيح وهو ${secretNumber} بعد ${guessTries} محاولات.`;
-        if (bestScore === null || guessTries < bestScore) {
-          bestScore = guessTries;
-          guessBestEl.textContent = bestScore;
-        }
-      } else if (value > secretNumber) {
-        guessResult.textContent = 'حاول رقم أقل 👇';
+    function pickSample(next = false) {
+      const list = samples[state.language];
+      if (next) {
+        state.sampleIndex = (state.sampleIndex + 1) % list.length;
       } else {
-        guessResult.textContent = 'حاول رقم أعلى 👆';
+        state.sampleIndex = Math.min(state.sampleIndex, list.length - 1);
+      }
+      return list[state.sampleIndex];
+    }
+
+    function setTargetText(next = false) {
+      const custom = normalizeText(els.customText.value);
+      const nextText = state.source === "custom" && custom ? custom : pickSample(next);
+      state.targetText = normalizeText(nextText);
+      if (!state.targetText) {
+        state.targetText = pickSample(false);
+      }
+      els.textDisplay.dir = getTextDirection();
+      els.typingInput.dir = getTextDirection();
+      renderText();
+      updateStats();
+    }
+
+    function getTyped() {
+      return normalizeLiveInput(els.typingInput.value);
+    }
+
+    function normalizeLiveInput(value) {
+      return String(value || "").replace(/\u00a0/g, " ").replace(/\s+/g, " ");
+    }
+
+    function getChars(value) {
+      return Array.from(value || "");
+    }
+
+    function renderText() {
+      const targetChars = getChars(state.targetText);
+      const typedChars = getChars(getTyped()).slice(0, targetChars.length);
+      const currentIndex = typedChars.length;
+      const fragment = document.createDocumentFragment();
+
+      targetChars.forEach((char, index) => {
+        const span = document.createElement("span");
+        span.className = "char";
+        if (char === " ") {
+          span.classList.add("space");
+          span.textContent = " ";
+        } else {
+          span.textContent = char;
+        }
+
+        if (index < typedChars.length) {
+          span.classList.add(typedChars[index] === char ? "correct" : "incorrect");
+        }
+
+        if (!state.finished && index === currentIndex) {
+          span.classList.add("cursor");
+        }
+
+        fragment.appendChild(span);
+      });
+
+      if (!state.finished && currentIndex >= targetChars.length) {
+        const cursor = document.createElement("span");
+        cursor.className = "char cursor";
+        cursor.textContent = " ";
+        fragment.appendChild(cursor);
       }
 
-      guessInput.focus();
-      guessInput.select();
+      els.textDisplay.replaceChildren(fragment);
+      els.progressDisplay.textContent = `${Math.min(currentIndex, targetChars.length)}/${targetChars.length}`;
     }
 
-    guessBtn.addEventListener('click', submitGuess);
-    guessInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitGuess(); });
-    guessReset.addEventListener('click', resetGuess);
-    resetGuess();
+    function calculateStats() {
+      const targetChars = getChars(state.targetText);
+      const typedChars = getChars(getTyped()).slice(0, targetChars.length);
+      let correct = 0;
+      let errors = 0;
 
-    // ===== لعبة الذاكرة =====
-    const memoryGrid = document.getElementById('memoryGrid');
-    const memoryResult = document.getElementById('memoryResult');
-    const memoryReset = document.getElementById('memoryReset');
-    const memoryMovesEl = document.getElementById('memoryMoves');
-    const memoryMatchesEl = document.getElementById('memoryMatches');
+      typedChars.forEach((char, index) => {
+        if (char === targetChars[index]) {
+          correct += 1;
+        } else {
+          errors += 1;
+        }
+      });
 
-    const emojis = ['🍎','🚀','🎮','🌟','🍕','⚽','🐱','🎵'];
-    let memoryCards = [];
-    let firstCard = null;
-    let secondCard = null;
-    let memoryLock = false;
-    let memoryMoves = 0;
-    let memoryMatches = 0;
+      const elapsedMinutes = Math.max(state.elapsedMs / 60000, 1 / 60);
+      const wpm = Math.round((correct / 5) / elapsedMinutes);
+      const accuracy = typedChars.length ? Math.round((correct / typedChars.length) * 100) : 100;
+      const progress = targetChars.length ? Math.round((typedChars.length / targetChars.length) * 100) : 0;
 
-    function shuffle(array) {
-      return array
-        .map(value => ({ value, sort: Math.random() }))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({ value }) => value);
+      return {
+        correct,
+        errors,
+        typed: typedChars.length,
+        total: targetChars.length,
+        wpm,
+        accuracy,
+        progress
+      };
     }
 
-    function createMemoryBoard() {
-      const deck = shuffle([...emojis, ...emojis]);
-      memoryCards = deck.map((emoji, index) => ({
-        id: index,
-        emoji,
-        flipped: false,
-        matched: false
-      }));
+    function updateStats() {
+      const stats = calculateStats();
+      const elapsedSeconds = Math.min(Math.floor(state.elapsedMs / 1000), state.duration);
+      els.wpmDisplay.textContent = stats.wpm;
+      els.accuracyDisplay.textContent = `${stats.accuracy}%`;
+      els.errorDisplay.textContent = stats.errors;
+      els.timeDisplay.textContent = `${elapsedSeconds}/${state.duration}`;
+      els.statusLine.textContent = state.finished ? "finished" : state.started ? "running" : "ready";
 
-      firstCard = null;
-      secondCard = null;
-      memoryLock = false;
-      memoryMoves = 0;
-      memoryMatches = 0;
-      memoryMovesEl.textContent = 0;
-      memoryMatchesEl.textContent = 0;
-      memoryResult.textContent = 'تم ترتيب البطاقات. ابدأ اللعب!';
-      renderMemory();
+      if (state.started && !state.finished && elapsedSeconds !== state.lastSampleSecond) {
+        state.lastSampleSecond = elapsedSeconds;
+        state.chartSamples.push({
+          second: elapsedSeconds,
+          wpm: stats.wpm,
+          accuracy: stats.accuracy
+        });
+      }
+
+      return stats;
     }
 
-    function renderMemory() {
-      memoryGrid.innerHTML = '';
-      memoryCards.forEach(card => {
-        const btn = document.createElement('button');
-        btn.className = 'memory-card' + (card.flipped ? ' flipped' : '') + (card.matched ? ' matched' : '');
-        btn.textContent = (card.flipped || card.matched) ? card.emoji : '❓';
-        btn.disabled = card.matched;
-        btn.addEventListener('click', () => flipMemoryCard(card.id));
-        memoryGrid.appendChild(btn);
+    function startTimer() {
+      if (state.started || state.finished) return;
+      state.started = true;
+      state.startTime = Date.now() - state.elapsedMs;
+      state.chartSamples = [];
+      state.lastSampleSecond = -1;
+      els.typingCard.classList.add("active");
+      els.resultsPanel.classList.remove("active");
+      tick();
+      state.timerId = window.setInterval(tick, 120);
+    }
+
+    function tick() {
+      if (!state.started || state.finished) return;
+      state.elapsedMs = Date.now() - state.startTime;
+      const stats = updateStats();
+      if (state.elapsedMs >= state.duration * 1000 || stats.typed >= stats.total) {
+        finishTest();
+      }
+    }
+
+    function finishTest() {
+      if (state.finished) return;
+      state.finished = true;
+      state.started = false;
+      state.elapsedMs = Math.min(state.elapsedMs, state.duration * 1000);
+      window.clearInterval(state.timerId);
+      els.typingCard.classList.remove("active");
+      renderText();
+      const stats = updateStats();
+      updateResults(stats);
+      els.typingInput.blur();
+    }
+
+    function updateResults(stats) {
+      const bestKey = `speedtype-best-${state.language}`;
+      const storedBest = Number(localStorage.getItem(bestKey) || 0);
+      const best = Math.max(storedBest, stats.wpm);
+      localStorage.setItem(bestKey, String(best));
+
+      els.finalWpm.textContent = stats.wpm;
+      els.finalAccuracy.textContent = `${stats.accuracy}%`;
+      els.finalChars.textContent = `${stats.correct}/${stats.total}`;
+      els.bestWpm.textContent = best;
+      els.resultsPanel.classList.add("active");
+      window.requestAnimationFrame(drawChart);
+    }
+
+    function drawChart() {
+      const canvas = els.resultChart;
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      const width = Math.max(320, Math.floor(rect.width));
+      const height = Math.max(220, Math.floor(rect.height));
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, width, height);
+
+      const pad = { top: 38, right: 24, bottom: 28, left: 34 };
+      const plotW = width - pad.left - pad.right;
+      const plotH = height - pad.top - pad.bottom;
+      const samplesForChart = state.chartSamples.length ? state.chartSamples : [{ second: 0, wpm: 0, accuracy: 100 }];
+      const maxSecond = Math.max(state.duration, ...samplesForChart.map((item) => item.second), 1);
+      const maxWpm = Math.max(80, ...samplesForChart.map((item) => item.wpm)) * 1.12;
+
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
+      ctx.fillStyle = "rgba(119, 125, 145, 0.85)";
+      ctx.font = "12px Cascadia Mono, Consolas, monospace";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+
+      for (let i = 0; i <= 4; i += 1) {
+        const y = pad.top + (plotH / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(pad.left, y);
+        ctx.lineTo(width - pad.right, y);
+        ctx.stroke();
+      }
+
+      for (let i = 0; i <= 5; i += 1) {
+        const x = pad.left + (plotW / 5) * i;
+        ctx.beginPath();
+        ctx.moveTo(x, pad.top);
+        ctx.lineTo(x, pad.top + plotH);
+        ctx.stroke();
+      }
+
+      function point(sample, type) {
+        const x = pad.left + (sample.second / maxSecond) * plotW;
+        const scale = type === "wpm" ? sample.wpm / maxWpm : sample.accuracy / 100;
+        const y = pad.top + plotH - Math.max(0, Math.min(1, scale)) * plotH;
+        return { x, y };
+      }
+
+      function line(type, color, widthValue) {
+        ctx.beginPath();
+        samplesForChart.forEach((sample, index) => {
+          const p = point(sample, type);
+          if (index === 0) {
+            ctx.moveTo(p.x, p.y);
+          } else {
+            ctx.lineTo(p.x, p.y);
+          }
+        });
+        ctx.strokeStyle = color;
+        ctx.lineWidth = widthValue;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+        ctx.stroke();
+      }
+
+      line("accuracy", "rgba(139, 144, 165, 0.95)", 3);
+      line("wpm", "#f3b11d", 4);
+
+      const last = samplesForChart[samplesForChart.length - 1];
+      const lastPoint = point(last, "wpm");
+      ctx.fillStyle = "#f3b11d";
+      ctx.beginPath();
+      ctx.arc(lastPoint.x, lastPoint.y, 5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function resetTest(options = {}) {
+      window.clearInterval(state.timerId);
+      state.started = false;
+      state.finished = false;
+      state.elapsedMs = 0;
+      state.startTime = 0;
+      state.lastSampleSecond = -1;
+      state.chartSamples = [];
+      els.typingInput.value = "";
+      els.typingCard.classList.remove("active");
+      els.resultsPanel.classList.remove("active");
+      if (options.newText) {
+        setTargetText(true);
+      } else {
+        setTargetText(false);
+      }
+      renderText();
+      updateStats();
+      if (options.focus) {
+        focusTyping();
+      }
+    }
+
+    function focusTyping() {
+      els.typingCard.focus();
+      els.typingInput.focus();
+    }
+
+    function setActiveButton(group, selector, value) {
+      group.querySelectorAll("button").forEach((button) => {
+        button.classList.toggle("active", button.dataset[selector] === value);
       });
     }
 
-    function flipMemoryCard(id) {
-      if (memoryLock) return;
-
-      const card = memoryCards[id];
-      if (card.flipped || card.matched) return;
-
-      card.flipped = true;
-      renderMemory();
-
-      if (!firstCard) {
-        firstCard = card;
-        return;
-      }
-
-      secondCard = card;
-      memoryMoves++;
-      memoryMovesEl.textContent = memoryMoves;
-      memoryLock = true;
-
-      setTimeout(() => {
-        if (firstCard.emoji === secondCard.emoji) {
-          firstCard.matched = true;
-          secondCard.matched = true;
-          memoryMatches++;
-          memoryMatchesEl.textContent = memoryMatches;
-          memoryResult.textContent = `ممتاز! طابقت زوج ${firstCard.emoji}`;
-
-          if (memoryMatches === emojis.length) {
-            memoryResult.textContent = `أحسنت! أنهيت اللعبة في ${memoryMoves} حركة.`;
-          }
-        } else {
-          firstCard.flipped = false;
-          secondCard.flipped = false;
-          memoryResult.textContent = 'لا يوجد تطابق، حاول مرة ثانية.';
-        }
-
-        firstCard = null;
-        secondCard = null;
-        memoryLock = false;
-        renderMemory();
-      }, 700);
+    function syncDuration(value) {
+      const clean = Math.max(5, Math.min(600, Number(value) || 30));
+      state.duration = clean;
+      els.durationInput.value = clean;
+      els.timeButtons.querySelectorAll("button").forEach((button) => {
+        button.classList.toggle("active", Number(button.dataset.time) === clean);
+      });
+      resetTest();
     }
 
-    memoryReset.addEventListener('click', createMemoryBoard);
-    createMemoryBoard();
+    els.typingInput.addEventListener("input", () => {
+      const targetLength = getChars(state.targetText).length;
+      const normalized = getChars(normalizeLiveInput(els.typingInput.value)).slice(0, targetLength).join("");
+      if (els.typingInput.value !== normalized) {
+        els.typingInput.value = normalized;
+      }
+
+      if (normalized.length > 0) {
+        startTimer();
+      }
+
+      renderText();
+      const stats = updateStats();
+      if (stats.typed >= stats.total && stats.total > 0) {
+        finishTest();
+      }
+    });
+
+    els.typingInput.addEventListener("keydown", (event) => {
+      if (event.key === "Tab") {
+        event.preventDefault();
+      }
+      if (state.finished && event.key.length === 1) {
+        event.preventDefault();
+      }
+    });
+
+    els.typingCard.addEventListener("click", focusTyping);
+    els.focusBtn.addEventListener("click", focusTyping);
+    els.startBtn.addEventListener("click", () => resetTest({ focus: true }));
+    els.resetBtn.addEventListener("click", () => resetTest({ focus: true }));
+    els.againBtn.addEventListener("click", () => resetTest({ focus: true }));
+    els.clearBtn.addEventListener("click", () => {
+      els.typingInput.value = "";
+      renderText();
+      updateStats();
+      focusTyping();
+    });
+    els.newTextBtn.addEventListener("click", () => resetTest({ newText: true, focus: true }));
+
+    els.languageButtons.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-language]");
+      if (!button) return;
+      state.language = button.dataset.language;
+      setActiveButton(els.languageButtons, "language", state.language);
+      resetTest({ focus: true });
+    });
+
+    els.sourceButtons.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-source]");
+      if (!button) return;
+      state.source = button.dataset.source;
+      setActiveButton(els.sourceButtons, "source", state.source);
+      els.customBox.classList.toggle("active", state.source === "custom");
+      resetTest({ focus: state.source !== "custom" });
+      if (state.source === "custom") {
+        els.customText.focus();
+      }
+    });
+
+    els.timeButtons.addEventListener("click", (event) => {
+      const button = event.target.closest("button[data-time]");
+      if (!button) return;
+      syncDuration(Number(button.dataset.time));
+    });
+
+    els.durationInput.addEventListener("change", () => syncDuration(els.durationInput.value));
+    els.applyCustomBtn.addEventListener("click", () => resetTest({ focus: true }));
+    els.customText.addEventListener("input", () => {
+      if (state.source === "custom" && !state.started) {
+        setTargetText(false);
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      const active = document.activeElement;
+      const isEditing = active === els.customText || active === els.durationInput;
+      const shouldCapture = !isEditing && active !== els.typingInput && !event.ctrlKey && !event.metaKey && !event.altKey && (event.key.length === 1 || event.key === "Backspace");
+      if (!shouldCapture || state.finished) return;
+
+      event.preventDefault();
+      focusTyping();
+
+      if (event.key === "Backspace") {
+        els.typingInput.value = getChars(els.typingInput.value).slice(0, -1).join("");
+      } else {
+        els.typingInput.value += event.key;
+      }
+
+      els.typingInput.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+
+    window.addEventListener("resize", () => {
+      if (els.resultsPanel.classList.contains("active")) {
+        drawChart();
+      }
+    });
+
+    setTargetText(false);
+    renderText();
+    updateStats();
   </script>
 </body>
 </html>
